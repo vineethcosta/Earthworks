@@ -28,8 +28,12 @@ require('./models/roles')
 require('./models/estimatedUnits')
 require('./models/universalUnits')
 require('./models/types')
+
+
 app.use(express.json())
 app.use(require('./routes/post'))
+app.use(require('./routes/get'))
+
 
 app.listen(PORT,()=>{
     console.log("server is running on",PORT)

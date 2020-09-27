@@ -5,7 +5,9 @@ const Inward =  mongoose.model("Inward")
 const Outward = mongoose.model("Outward")
 const Types = mongoose.model("Types")
 const Roles = mongoose.model("Roles")
-const Organizations = mongoose.model("Organizations")
+const Organization = mongoose.model("Organization")
+
+
 router.get('/getInward',(req,res)=>{
     Inward.find()
     .sort('-createdAt')
@@ -50,7 +52,7 @@ router.get('/getRoles',(req,res)=>{
 })
 
 router.get('/getOrganizations',(req,res)=>{
-    Organizations.find()
+    Organization.find()
     .then(orgs=>{
         res.json({orgs})
     })
@@ -60,3 +62,4 @@ router.get('/getOrganizations',(req,res)=>{
 })
 
 
+module.exports = router
