@@ -9,7 +9,8 @@ const EstimatedUnits =  mongoose.model("EstimatedUnits")
 const UniversalUnits =  mongoose.model("UniversalUnits")
 const Roles =  mongoose.model("Roles")
 const Types =  mongoose.model("Types")
-
+const AllSiteLocations =  mongoose.model("AllSiteLocations")
+const Organization =  mongoose.model("Organization")
 
 
 router.post('/addPerson',(req,res)=>{
@@ -95,6 +96,21 @@ router.post('/addOutward',(req,res)=>{
 
 
 router.post('/loadDefaultData',(req,res)=>{
+    const organizations = [
+        {name: "Hyderabad", website: "HYD.com", phone_number:"123456789"},
+        {name: "Nellore", website: "NLR.com", phone_number:"123456789"},
+        {name: "Bangalore", website: "BNG.com", phone_number:"123456789"},
+        {name: "Mumbai", website: "MUM.com", phone_number:"123456789"},
+        {name: "Delhi", website: "DEL.com", phone_number:"123456789"},
+    ]
+
+    const location = [
+        {name: "Hyderabad", abbr: "HYD"},
+        {name: "Nellore", abbr: "NLR"},
+        {name: 'Bangalore',abbr: 'BNG'},
+        {name: 'Mumbai', abbr: 'MUM'},
+        {name: 'Delhi', abbr: 'DEL'},
+    ]
     const universalUnits = [
         {name: "meters", abbr: "m"},
         {name: "square-meters", abbr: "sq.m"},
@@ -144,6 +160,14 @@ router.post('/loadDefaultData',(req,res)=>{
         console.log(err)
     })
 
+    AllSiteLocations.insertMany(location)
+    .then(result=>{
+        res.json({locations:result})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+
     Roles.insertMany(roles)
     .then(result=>{
         res.json({roles:result})
@@ -152,6 +176,13 @@ router.post('/loadDefaultData',(req,res)=>{
         console.log(err)
     })
 
+    Organization.insertMany(organizations)
+    .then(result=>{
+        res.json({organizations:result})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
   
     
     EstimatedUnits.insertMany(estimatedUnits)

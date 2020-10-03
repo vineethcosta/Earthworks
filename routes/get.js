@@ -6,6 +6,7 @@ const Outward = mongoose.model("Outward")
 const Types = mongoose.model("Types")
 const Roles = mongoose.model("Roles")
 const Organization = mongoose.model("Organization")
+const Location = mongoose.model("AllSiteLocations")
 
 
 router.get('/getInward',(req,res)=>{
@@ -55,6 +56,16 @@ router.get('/getOrganizations',(req,res)=>{
     Organization.find()
     .then(orgs=>{
         res.json({orgs})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
+
+router.get('/getAllLocations',(req,res)=>{
+    Location.find()
+    .then(locations=>{
+        res.json({locations})
     })
     .catch(err=>{
         console.log(err)
