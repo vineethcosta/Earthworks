@@ -6,6 +6,7 @@ const {MONGOURI} = require('./config/keys')
 var cors = require('cors')
 
 app.use(cors())
+app.use(require("body-parser").json())
 
 mongoose.connect(MONGOURI,{
     useNewUrlParser:true,

@@ -1,11 +1,15 @@
 const mongoose = require('mongoose')
 const {ObjectId} = mongoose.Schema.Types
 const resourceSchema = new mongoose.Schema({
+    identifier:{
+        type:String,
+        required:true
+    },
     type:{
         type:String,
         required:true
     },
-    measure :{
+    comment :{
         type:String,
         required:true
     },
@@ -17,10 +21,6 @@ const resourceSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    now_at:{
-        type:String,
-        required:true
-    },
     owner:{
         type:ObjectId,
         ref:"Person"
@@ -29,11 +29,11 @@ const resourceSchema = new mongoose.Schema({
         type:ObjectId,
         ref:"Quantity"
     },
-    SKU:{
+    sku:{
         type:String,
         required:true
     },
-    Location:{
+    location:{
         type:String,
         required:true
     }

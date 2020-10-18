@@ -14,12 +14,11 @@ const Organization =  mongoose.model("Organization")
 
 
 router.post('/addPerson',(req,res)=>{
-    console.log("***********"+req.body)
+    console.log("*********** req.body",req.body)
     const {FirstName,LastName,Phone,Email,Organization,CurrentLocation,Address,Job_Title } = req.body 
-     if(!name || !phone || !email || !organization|| !current_location|| !address){
-       return  res.status(422).json({error:"Plase add all the fields"})
-     }
-    console.log("*****************"+req)
+    //  if(!name || !phone || !email || !organization|| !current_location|| !address){
+    //    return  res.status(422).json({error:"Plase add all the fields"})
+    //  }
     const person = new Person({
         first_name: FirstName,
         last_name: LastName,
@@ -40,16 +39,20 @@ router.post('/addPerson',(req,res)=>{
 })
 
 router.post('/addResource',(req,res)=>{
-    const {type,measure,full_name,nick_name,now_at } = req.body 
-    if(!type || !measure || !full_name || !nick_name || !now_at ){
-      return  res.status(422).json({error:"Plase add all the fields"})
-    }
+    const {FullName, NickName, SKU, Type, Quantity, Location, Comment, Owner} = req.body 
+    // if(!type || !measure || !full_name || !nick_name || !now_at ){
+    //   return  res.status(422).json({error:"Plase add all the fields"})
+    // }
     const resource = new Resource({
-        type,
-        measure,
-        full_name,
-        nick_name,
-        now_at
+        full_name : FullName, 
+        nick_name : NickName, 
+        sku : SKU, 
+        type : Type, 
+        available_quantity : Quantity, 
+        location : Location, 
+        comment : Comment, 
+        owner : Owner,
+        identifier: FullName + SKU
     })
     resource.save().then(result=>{
         res.json({resource:result})

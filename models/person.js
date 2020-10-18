@@ -30,7 +30,7 @@ const personSchema = new mongoose.Schema({
     },
     address:{
         type:String,
-        required:true
+        // required:true
     }
 },{timestamps:true})
 
