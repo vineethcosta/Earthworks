@@ -73,6 +73,7 @@ router.post('/addInward',(req,res)=>{
 })
 
 router.post('/addOutward',(req,res)=>{
+    
     const {resource,quantity,requested_by,transporter,location,comments } = req.body 
     if(!resource || !quantity || !requested_by || !comments || transporter || location){
       return  res.status(422).json({error:"Plase add all the fields"})
