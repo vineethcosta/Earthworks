@@ -13,6 +13,18 @@ const inwardSchema = new mongoose.Schema({
         type:ObjectId,
         ref:"Person"
     },
+    price:{
+        type:Number,
+        required: true
+    },
+    date:{
+        type:String,
+        required:true
+    },
+    organization:{
+        type:String,
+        required:true
+    },
     comments:{
         type:String,
         required:true

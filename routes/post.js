@@ -9,22 +9,27 @@ const EstimatedUnits =  mongoose.model("EstimatedUnits")
 const UniversalUnits =  mongoose.model("UniversalUnits")
 const Roles =  mongoose.model("Roles")
 const Types =  mongoose.model("Types")
-
+const AllSiteLocations =  mongoose.model("AllSiteLocations")
+const Organization =  mongoose.model("Organization")
 
 
 router.post('/addPerson',(req,res)=>{
-    const {name,phone,email,organization,current_location,address } = req.body 
-    if(!name || !phone || !email || !organization|| !current_location|| !address){
-      return  res.status(422).json({error:"Plase add all the fields"})
-    }
+    console.log("*********** req.body",req.body)
+    const {FirstName,LastName,Phone,Email,Organization,CurrentLocation,Address,JobTitle } = req.body 
+    //  if(!name || !phone || !email || !organization|| !current_location|| !address){
+    //    return  res.status(422).json({error:"Plase add all the fields"})
+    //  }
     const person = new Person({
-        name,
-        phone,
-        email,
-        organization,
-        current_location,
-        address
+        first_name: FirstName,
+        last_name: LastName,
+        phone: Phone,
+        email:Email,
+        organization : Organization,
+        current_location: CurrentLocation,
+        address: Address,
+        role: JobTitle
     })
+    console.log(person)
     person.save().then(result=>{
         res.json({person:result})
     })
@@ -34,16 +39,20 @@ router.post('/addPerson',(req,res)=>{
 })
 
 router.post('/addResource',(req,res)=>{
-    const {type,measure,full_name,nick_name,now_at } = req.body 
-    if(!type || !measure || !full_name || !nick_name || !now_at ){
-      return  res.status(422).json({error:"Plase add all the fields"})
-    }
+    const {FullName, NickName, SKU, Type, Quantity, Location, Owner} = req.body 
+    // if(!type || !measure || !full_name || !nick_name || !now_at ){
+    //   return  res.status(422).json({error:"Plase add all the fields"})
+    // }
+    // console.log("************ req.body = ", req.body );
     const resource = new Resource({
-        type,
-        measure,
-        full_name,
-        nick_name,
-        now_at
+        full_name : FullName, 
+        nick_name : NickName, 
+        sku : SKU, 
+        type : Type, 
+        available_quantity : Quantity, 
+        location : Location,  
+        owner : Owner,
+        identifier: FullName + SKU
     })
     resource.save().then(result=>{
         res.json({resource:result})
@@ -54,15 +63,18 @@ router.post('/addResource',(req,res)=>{
 })
 
 router.post('/addInward',(req,res)=>{
-    const {resource,quantity,sourced_by,comments } = req.body 
-    if(!resource || !quantity || !sourced_by || !comments){
-      return  res.status(422).json({error:"Plase add all the fields"})
-    }
+    const {Resource, Person, Organization, Price, Quantity, Comments, Date} = req.body 
+    // if(!resource || !quantity || !sourced_by || !comments){
+    //   return  res.status(422).json({error:"Plase add all the fields"})
+    // }
     const inward = new Inward({
-        resource,
-        quantity,
-        sourced_by,
-        comments
+        resource : Resource,
+        quantity : Quantity,
+        sourced_by : Person,
+        comments : Comments,
+        organization: Organization,
+        price : Price,
+        date : Date
     })
     inward.save().then(result=>{
         res.json({inward:result})
@@ -74,17 +86,17 @@ router.post('/addInward',(req,res)=>{
 
 router.post('/addOutward',(req,res)=>{
     
-    const {resource,quantity,requested_by,transporter,location,comments } = req.body 
-    if(!resource || !quantity || !requested_by || !comments || transporter || location){
-      return  res.status(422).json({error:"Plase add all the fields"})
-    }
+    const{Resource, PersonRequested, Transporter, ToLocation, Quantity, Comments} = req.body 
+    // if(!resource || !quantity || !requested_by || !comments || transporter || location){
+    //   return  res.status(422).json({error:"Plase add all the fields"})
+    // }
     const outward = new Outward({
-        resource,
-        quantity,
-        requested_by,
-        transporter,
-        location,
-        comments
+        resource : Resource,
+        quantity : Quantity,
+        requested_by : PersonRequested,
+        transporter : Transporter,
+        location : ToLocation,
+        comments : Comments
     })
     outward.save().then(result=>{
         res.json({outward:result})
@@ -96,6 +108,21 @@ router.post('/addOutward',(req,res)=>{
 
 
 router.post('/loadDefaultData',(req,res)=>{
+    const organizations = [
+        {name: "Hyderabad", website: "HYD.com", phone_number:"123456789"},
+        {name: "Nellore", website: "NLR.com", phone_number:"123456789"},
+        {name: "Bangalore", website: "BNG.com", phone_number:"123456789"},
+        {name: "Mumbai", website: "MUM.com", phone_number:"123456789"},
+        {name: "Delhi", website: "DEL.com", phone_number:"123456789"},
+    ]
+
+    const location = [
+        {name: "Hyderabad", abbr: "HYD"},
+        {name: "Nellore", abbr: "NLR"},
+        {name: 'Bangalore',abbr: 'BNG'},
+        {name: 'Mumbai', abbr: 'MUM'},
+        {name: 'Delhi', abbr: 'DEL'},
+    ]
     const universalUnits = [
         {name: "meters", abbr: "m"},
         {name: "square-meters", abbr: "sq.m"},
@@ -145,6 +172,14 @@ router.post('/loadDefaultData',(req,res)=>{
         console.log(err)
     })
 
+    AllSiteLocations.insertMany(location)
+    .then(result=>{
+        res.json({locations:result})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+
     Roles.insertMany(roles)
     .then(result=>{
         res.json({roles:result})
@@ -153,6 +188,13 @@ router.post('/loadDefaultData',(req,res)=>{
         console.log(err)
     })
 
+    Organization.insertMany(organizations)
+    .then(result=>{
+        res.json({organizations:result})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
   
     
     EstimatedUnits.insertMany(estimatedUnits)

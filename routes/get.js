@@ -6,6 +6,35 @@ const Outward = mongoose.model("Outward")
 const Types = mongoose.model("Types")
 const Roles = mongoose.model("Roles")
 const Organization = mongoose.model("Organization")
+const Location = mongoose.model("AllSiteLocations")
+const Person =  mongoose.model("Person")
+const Resource = mongoose.model("Resource")
+
+router.get('/getOwners',(req,res)=>{
+    //  Person.find(x=>x.role=='owner')
+    // .sort('-createdAt')
+    // .then(owner=>{
+    //     res.json({owner})
+    // })
+    // .catch(err=>{
+    //     console.log(err)
+    // })
+    res.json({});
+})
+
+router.get('/getAllPersons',(req,res)=>{
+    Person.find({}, 
+    {
+        "first_name": 1,
+        "last_name" : 1
+    })
+    .then(resources=>{
+        res.json({persons})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
 router.get('/getInward',(req,res)=>{
     console.log("Inside getInward");
     Inward.find()
@@ -51,7 +80,7 @@ router.get('/getRoles',(req,res)=>{
     })
 })
 
-router.get('/getOrganization',(req,res)=>{
+router.get('/getOrganizations',(req,res)=>{
     Organization.find()
     .then(orgs=>{
         res.json({orgs})
@@ -60,5 +89,30 @@ router.get('/getOrganization',(req,res)=>{
         console.log(err)
     })
 })
+
+router.get('/getAllLocations',(req,res)=>{
+    Location.find()
+    .then(locations=>{
+        res.json({locations})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
+
+router.get('/getAllResources',(req,res)=>{
+    Resource.find({}, 
+    {
+        "identifier": 1
+    })
+    .then(resources=>{
+        res.json({resources})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
+
+
 
 module.exports = router

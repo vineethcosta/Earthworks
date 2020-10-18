@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 const {ObjectId} = mongoose.Schema.Types
 const resourceSchema = new mongoose.Schema({
-    type:{
+    identifier:{
         type:String,
         required:true
     },
-    measure :{
+    type:{
         type:String,
         required:true
     },
@@ -17,18 +17,23 @@ const resourceSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    now_at:{
+    owner:{
+        type: String,
+        // ref:"Person"
+    },
+    available_quantity:{
+        type: Number,
+        // ref:"Quantity"
+    },
+    sku:{
         type:String,
         required:true
     },
-    owner:{
-        type:ObjectId,
-        ref:"Person"
-    },
-    available_quantity:{
-        type:ObjectId,
-        ref:"Quantity"
+    location:{
+        type:String,
+        required:true
     }
+
 },{timestamps:true})
 
 mongoose.model("Resource",resourceSchema)
