@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
-const {ObjectId} = mongoose.Schema.Types
 const personSchema = new mongoose.Schema({
-    name :{
+    first_name :{
+        type:String,
+        required:true
+    },
+    last_name :{
         type:String,
         required:true
     },
@@ -30,4 +33,5 @@ const personSchema = new mongoose.Schema({
         required:true
     }
 },{timestamps:true})
+
 mongoose.model("Person",personSchema)

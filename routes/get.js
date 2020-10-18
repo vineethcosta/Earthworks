@@ -7,8 +7,18 @@ const Types = mongoose.model("Types")
 const Roles = mongoose.model("Roles")
 const Organization = mongoose.model("Organization")
 const Location = mongoose.model("AllSiteLocations")
+const Person =  mongoose.model("Person")
 
-
+router.get('/getOwners',(req,res)=>{
+     Person.find(x=>x.role=='owner')
+    .sort('-createdAt')
+    .then(owner=>{
+        res.json({owner})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
 router.get('/getInward',(req,res)=>{
     Inward.find()
     .sort('-createdAt')
@@ -71,6 +81,8 @@ router.get('/getAllLocations',(req,res)=>{
         console.log(err)
     })
 })
+
+
 
 
 module.exports = router

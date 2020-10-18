@@ -28,7 +28,16 @@ const resourceSchema = new mongoose.Schema({
     available_quantity:{
         type:ObjectId,
         ref:"Quantity"
+    },
+    SKU:{
+        type:String,
+        required:true
+    },
+    Location:{
+        type:String,
+        required:true
     }
+
 },{timestamps:true})
 
 mongoose.model("Resource",resourceSchema)
