@@ -2,24 +2,29 @@ const mongoose = require('mongoose')
 const {ObjectId} = mongoose.Schema.Types
 const outwardSchema = new mongoose.Schema({
     resource:{
-        type:ObjectId,
-        ref:"Resource"
+        // type:ObjectId,
+        // ref:"Resource"
+        type : String
     },
     quantity :{
-        type:ObjectId,
-        ref:"Quantity"
+        // type:ObjectId,
+        // ref:"Quantity"
+        type: Number
     },
     requested_by:{
-        type:ObjectId,
-        ref:"Person"
+        // type:ObjectId,
+        // ref:"Person"
+        type: String
     },
     transporter:{
-        type:ObjectId,
-        ref:"Person"
+        // type:ObjectId,
+        // ref:"Person"
+        type: String
     },
     location:{
-        type:ObjectId,
-        ref:"Location"
+        // type:ObjectId,
+        // ref:"Location"
+        type: String
     },
     comments:{
         type:String,

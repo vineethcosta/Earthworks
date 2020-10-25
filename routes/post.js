@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const Person =  mongoose.model("Person")
 const Inward =  mongoose.model("Inward")
 const Outward =  mongoose.model("Outward")
-const Resource =  mongoose.model("Resource")
+const Resources =  mongoose.model("Resource")
 const EstimatedUnits =  mongoose.model("EstimatedUnits")
 const UniversalUnits =  mongoose.model("UniversalUnits")
 const Roles =  mongoose.model("Roles")
@@ -44,7 +44,7 @@ router.post('/addResource',(req,res)=>{
     //   return  res.status(422).json({error:"Plase add all the fields"})
     // }
     // console.log("************ req.body = ", req.body );
-    const resource = new Resource({
+    const resource = new Resources({
         full_name : FullName, 
         nick_name : NickName, 
         sku : SKU, 
@@ -76,6 +76,17 @@ router.post('/addInward',(req,res)=>{
         price : Price,
         date : Date
     })
+
+    Resources.findOneAndUpdate({identifier : Resource} ,{$inc:{available_quantity: Quantity}}, {new: true} ,(err, doc) => {
+        if (err) {
+            console.log("Something wrong when updating data!");
+        }
+        console.log("doc", doc);
+    })
+    .catch(err=>{
+        console.log("err",err)
+    })
+
     inward.save().then(result=>{
         res.json({inward:result})
     })
@@ -84,7 +95,7 @@ router.post('/addInward',(req,res)=>{
     })
 })
 
-router.post('/addOutward',(req,res)=>{
+router.post('/addOutward', (req,res)=>{
     
     const{Resource, PersonRequested, Transporter, ToLocation, Quantity, Comments} = req.body 
     // if(!resource || !quantity || !requested_by || !comments || transporter || location){
@@ -98,12 +109,44 @@ router.post('/addOutward',(req,res)=>{
         location : ToLocation,
         comments : Comments
     })
-    outward.save().then(result=>{
-        res.json({outward:result})
-    })
+    var quant = 0;
+    Resources.findOne({identifier: Resource})
+    .then(resource=>{
+        console.log("available quant", resource.available_quantity)
+        quant = resource.available_quantity })
+        .then (x => {
+            console.log("quant after", quant);
+            if(Quantity <= quant){
+                updateResource();
+            }else{
+                console.log("inside else")
+                res.json({"message": "given quantity greater than available quantity"})
+            }
+        })
+        
+  
     .catch(err=>{
         console.log(err)
     })
+        
+   
+    const updateResource = () => {Resources.findOneAndUpdate({identifier : Resource},{$inc:{available_quantity: -Quantity}}, {new: true} ,(err, doc) => {
+            if (err) {
+                console.log("Something wrong when updating data!");
+            }
+            console.log("doc", doc);
+        })
+        .catch(err=>{
+            console.log("err",err)
+        })
+    
+        outward.save().then(result=>{
+            return res.status(200).json({message: 'Successfull'})
+        })
+        .catch(err=>{
+            console.log(err)
+    })
+    }
 })
 
 

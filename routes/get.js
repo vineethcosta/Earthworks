@@ -28,7 +28,7 @@ router.get('/getAllPersons',(req,res)=>{
         "first_name": 1,
         "last_name" : 1
     })
-    .then(resources=>{
+    .then(persons=>{
         res.json({persons})
     })
     .catch(err=>{
@@ -37,7 +37,7 @@ router.get('/getAllPersons',(req,res)=>{
 })
 router.get('/getInward',(req,res)=>{
     console.log("Inside getInward");
-    Inward.find()
+    Inward.find({}, {_id : 0, createdAt: 0, updatedAt:0, __v : 0})
     .sort('-createdAt')
     .then(inward=>{
         res.json({inward})

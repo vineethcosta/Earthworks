@@ -2,32 +2,33 @@ const mongoose = require('mongoose')
 const {ObjectId} = mongoose.Schema.Types
 const inwardSchema = new mongoose.Schema({
     resource:{
-        type:ObjectId,
-        ref:"Resource"
+        type:String,
+        // ref:"Resource"
     },
     quantity :{
-        type:ObjectId,
-        ref:"Quantity"
+        type: Number
+        // type:ObjectId,
+        // ref:"Quantity"
     },
     sourced_by:{
-        type:ObjectId,
-        ref:"Person"
+        type: String
+        // ref:"Person"
     },
     price:{
         type:Number,
-        required: true
+        // required: true
     },
     date:{
         type:String,
-        required:true
+        // required:true
     },
     organization:{
         type:String,
-        required:true
+        // required:true
     },
     comments:{
         type:String,
-        required:true
+        // required:true
     }
 },{timestamps:true})
 
