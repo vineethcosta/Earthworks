@@ -29,6 +29,10 @@ const outwardSchema = new mongoose.Schema({
     comments:{
         type:String,
         required:true
+    },
+    type:{
+        type:String,
+        default:"Outward"
     }
 },{timestamps:true})
 

@@ -48,7 +48,7 @@ router.get('/getInward',(req,res)=>{
 })
 
 router.get('/getOutward',(req,res)=>{
-    Outward.find()
+    Outward.find({}, {_id : 0, createdAt: 0, updatedAt:0, __v : 0})
     .sort('-createdAt')
     .then(outward=>{
         res.json({outward})

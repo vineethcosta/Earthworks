@@ -29,6 +29,10 @@ const inwardSchema = new mongoose.Schema({
     comments:{
         type:String,
         // required:true
+    },
+    type:{
+        type:String,
+        default:"Inward"
     }
 },{timestamps:true})
 
