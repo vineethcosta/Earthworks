@@ -15,19 +15,19 @@ const Organization =  mongoose.model("Organization")
 
 router.post('/addPerson',(req,res)=>{
     console.log("*********** req.body",req.body)
-    const {FirstName,LastName,Phone,Email,Organization,CurrentLocation,Address,JobTitle } = req.body 
+    const {firstName,lastName,phone,email,organization,location,address,jobTitle } = req.body.values
     //  if(!name || !phone || !email || !organization|| !current_location|| !address){
     //    return  res.status(422).json({error:"Plase add all the fields"})
     //  }
     const person = new Person({
-        first_name: FirstName,
-        last_name: LastName,
-        phone: Phone,
-        email:Email,
-        organization : Organization,
-        current_location: CurrentLocation,
-        address: Address,
-        role: JobTitle
+        first_name: firstName,
+        last_name: lastName,
+        phone: phone,
+        email:email,
+        organization : organization,
+        current_location: location,
+        address: address,
+        role: jobTitle
     })
     console.log(person)
     person.save().then(result=>{
