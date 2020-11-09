@@ -106,13 +106,26 @@ router.get('/getAllResources',(req,res)=>{
         "identifier": 1
     })
     .then(resources=>{
+        console.log(resources)
         res.json({resources})
+        
     })
     .catch(err=>{
         console.log(err)
     })
 })
 
+router.get('/getFullResources',(req,res)=>{
+    Resource.find()
+    .then(resources=>{
+        console.log(resources)
+        res.json({resources})
+        
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
 
 
 module.exports = router
