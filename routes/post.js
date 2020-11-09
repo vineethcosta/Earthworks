@@ -39,20 +39,20 @@ router.post('/addPerson',(req,res)=>{
 })
 
 router.post('/addResource',(req,res)=>{
-    const {FullName, NickName, SKU, Type, Quantity, Location, Owner} = req.body 
+    const {fullName, nickName, SKU, type, quantity, location, owner} = req.body.values 
     // if(!type || !measure || !full_name || !nick_name || !now_at ){
     //   return  res.status(422).json({error:"Plase add all the fields"})
     // }
     // console.log("************ req.body = ", req.body );
     const resource = new Resources({
-        full_name : FullName, 
-        nick_name : NickName, 
+        full_name : fullName, 
+        nick_name : nickName, 
         sku : SKU, 
-        type : Type, 
-        available_quantity : Quantity, 
-        location : Location,  
-        owner : Owner,
-        identifier: FullName + SKU
+        type : type, 
+        available_quantity : quantity, 
+        location : location,  
+        owner : owner,
+        identifier: fullName +"-"+ SKU
     })
     resource.save().then(result=>{
         res.json({resource:result})
@@ -63,21 +63,21 @@ router.post('/addResource',(req,res)=>{
 })
 
 router.post('/addInward',(req,res)=>{
-    const {Resource, Person, Organization, Price, Quantity, Comments, Date} = req.body 
+    const {resource, sourcedBy, organization, price, quantity, comments, date} = req.body.values
     // if(!resource || !quantity || !sourced_by || !comments){
     //   return  res.status(422).json({error:"Plase add all the fields"})
     // }
     const inward = new Inward({
-        resource : Resource,
-        quantity : Quantity,
-        sourced_by : Person,
-        comments : Comments,
-        organization: Organization,
-        price : Price,
-        date : Date
+        resource : resource,
+        quantity : quantity,
+        sourced_by : sourcedBy,
+        comments : comments,
+        organization: organization,
+        price : price,
+        date : date
     })
 
-    Resources.findOneAndUpdate({identifier : Resource} ,{$inc:{available_quantity: Quantity}}, {new: true} ,(err, doc) => {
+    Resources.findOneAndUpdate({identifier : resource} ,{$inc:{available_quantity: quantity}}, {new: true} ,(err, doc) => {
         if (err) {
             console.log("Something wrong when updating data!");
         }
