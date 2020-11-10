@@ -106,7 +106,6 @@ router.get('/getAllResources',(req,res)=>{
         "identifier": 1
     })
     .then(resources=>{
-        console.log(resources)
         res.json({resources})
         
     })
@@ -116,11 +115,9 @@ router.get('/getAllResources',(req,res)=>{
 })
 
 router.get('/getFullResources',(req,res)=>{
-    Resource.find()
+    Resource.find({}, {_id: 0, updatedAt: 0, __v: 0})
     .then(resources=>{
-        console.log(resources)
         res.json({resources})
-        
     })
     .catch(err=>{
         console.log(err)

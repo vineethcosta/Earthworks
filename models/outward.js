@@ -30,6 +30,14 @@ const outwardSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    vehicleNo:{
+        type:String,
+        required:true
+    },
+    contractor:{
+        type:String,
+        required:true
+    },
     type:{
         type:String,
         default:"Outward"

@@ -63,7 +63,7 @@ router.post('/addResource',(req,res)=>{
 })
 
 router.post('/addInward',(req,res)=>{
-    const {resource, sourcedBy, organization, price, quantity, comments, date} = req.body.values
+    const {resource, sourcedBy, organization, price, quantity, comments, date, billNo} = req.body.values
     // if(!resource || !quantity || !sourced_by || !comments){
     //   return  res.status(422).json({error:"Plase add all the fields"})
     // }
@@ -74,14 +74,14 @@ router.post('/addInward',(req,res)=>{
         comments : comments,
         organization: organization,
         price : price,
-        date : date
+        date : date,
+        billNumber : billNo
     })
 
     Resources.findOneAndUpdate({identifier : resource} ,{$inc:{available_quantity: quantity}}, {new: true} ,(err, doc) => {
         if (err) {
             console.log("Something wrong when updating data!");
         }
-        console.log("doc", doc);
     })
     .catch(err=>{
         console.log("err",err)
@@ -97,29 +97,30 @@ router.post('/addInward',(req,res)=>{
 
 router.post('/addOutward', (req,res)=>{
     
-    const{Resource, PersonRequested, Transporter, ToLocation, Quantity, Comments} = req.body 
+    const{resource, requestedBy, transportedBy, ToLocation, quantity, comments, date, contractor, vehicleNo} = req.body.values
     // if(!resource || !quantity || !requested_by || !comments || transporter || location){
     //   return  res.status(422).json({error:"Plase add all the fields"})
     // }
     const outward = new Outward({
-        resource : Resource,
-        quantity : Quantity,
-        requested_by : PersonRequested,
-        transporter : Transporter,
+        resource : resource,
+        quantity : quantity,
+        requested_by : requestedBy,
+        transporter : transportedBy,
         location : ToLocation,
-        comments : Comments
+        comments : comments,
+        vehicleNo: vehicleNo,
+        contractor: contractor
     })
     var quant = 0;
-    Resources.findOne({identifier: Resource})
+    Resources.findOne({identifier: resource})
     .then(resource=>{
         console.log("available quant", resource.available_quantity)
         quant = resource.available_quantity })
         .then (x => {
             console.log("quant after", quant);
-            if(Quantity <= quant){
+            if(quantity <= quant){
                 updateResource();
             }else{
-                console.log("inside else")
                 res.json({"message": "given quantity greater than available quantity"})
             }
         })
@@ -130,7 +131,7 @@ router.post('/addOutward', (req,res)=>{
     })
         
    
-    const updateResource = () => {Resources.findOneAndUpdate({identifier : Resource},{$inc:{available_quantity: -Quantity}}, {new: true} ,(err, doc) => {
+    const updateResource = () => {Resources.findOneAndUpdate({identifier : resource},{$inc:{available_quantity: -quantity}}, {new: true} ,(err, doc) => {
             if (err) {
                 console.log("Something wrong when updating data!");
             }

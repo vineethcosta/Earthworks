@@ -30,6 +30,10 @@ const inwardSchema = new mongoose.Schema({
         type:String,
         // required:true
     },
+    billNo:{
+        type:String,
+        // required:true
+    },
     type:{
         type:String,
         default:"Inward"
