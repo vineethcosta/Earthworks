@@ -62,7 +62,7 @@ router.post('/addResource',(req,res)=>{
     })
 })
 
-router.post('/addInward',(req,res)=>{
+router.post('/addInward',async (req,res)=>{
     const {resource, sourcedBy, organization, price, quantity, comments, date, billNo} = req.body.values
     // if(!resource || !quantity || !sourced_by || !comments){
     //   return  res.status(422).json({error:"Plase add all the fields"})
@@ -77,8 +77,9 @@ router.post('/addInward',(req,res)=>{
         date : date,
         billNumber : billNo
     })
-
-    Resources.findOneAndUpdate({identifier : resource} ,{$inc:{available_quantity: quantity}}, {new: true} ,(err, doc) => {
+    var current_resource = await Resources.findOne({identifier : resource});
+    var present_quantity = current_resource.available_quantity;
+    Resources.findOneAndUpdate({identifier : resource, available_quantity: present_quantity} ,{$inc:{available_quantity: quantity}}, {new: true} ,(err, doc) => {
         if (err) {
             console.log("Something wrong when updating data!");
         }
@@ -124,14 +125,11 @@ router.post('/addOutward', (req,res)=>{
                 res.json({"message": "given quantity greater than available quantity"})
             }
         })
-        
-  
     .catch(err=>{
         console.log(err)
     })
-        
-   
-    const updateResource = () => {Resources.findOneAndUpdate({identifier : resource},{$inc:{available_quantity: -quantity}}, {new: true} ,(err, doc) => {
+
+    const updateResource = () => {Resources.findOneAndUpdate({identifier : resource, available_quantity : quant},{$inc:{available_quantity: -quantity}}, {new: true} ,(err, doc) => {
             if (err) {
                 console.log("Something wrong when updating data!");
             }
